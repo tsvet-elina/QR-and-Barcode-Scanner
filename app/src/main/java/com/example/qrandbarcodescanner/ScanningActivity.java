@@ -26,6 +26,7 @@ public class ScanningActivity extends AppCompatActivity {
             public void onDecoded(@NonNull Result result) {
                 Intent intent = new Intent();
                 intent.putExtra("resultScanning", result.getText());
+//                intent.putExtra("typeScanning", result.getBarcodeFormat().toString());
                 setResult(RESULT_OK, intent);
                 finish();
             }

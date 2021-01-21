@@ -5,15 +5,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
     Button scannerBtn;
+    TextView dataView;
+    WebView webView;
     public static final int CAMERA_REQUEST_PERMISSION = 1;
     public static final int SCANNING_REQUEST_CODE = 2;
 
@@ -22,7 +32,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //get views from layout
+        LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View viewInput = inflater.inflate(R.layout.web_view, null, false);
+        webView = viewInput.findViewById(R.id.web_view_window);
+
         scannerBtn = findViewById(R.id.btn_scanner);
+        dataView = findViewById(R.id.data_text);
 
         scannerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SCANNING_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                scannerBtn.setText(data.getStringExtra("resultScanning"));
+                webView.loadUrl(data.getStringExtra("resultScanning"));
+                dataView.setText(data.getStringExtra("resultScanning"));
             }
         }
     }
